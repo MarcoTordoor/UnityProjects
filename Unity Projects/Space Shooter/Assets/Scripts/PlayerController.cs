@@ -14,45 +14,24 @@ public class PlayerController : MonoBehaviour
 	public float tilt;
 	public Boundary boundary;
 
-	// Normal shots
-	public GameObject shot;
-	public Transform[] shotSpawns;
-	public float fireRate;
-	private float nextCommonFire;
-
-	// Special arced shot around the ship
-	public GameObject specialShot;
-	public Transform specialShotSpawn;
-	public float fireRateSpecial;
-	private float nextSpecialFire;
+	public MainWeapon mainWeapon;
+	public SecondaryWeapon secondaryWeapon;
 
 	private Rigidbody rb;
-	private AudioSource shotSound;
 
 	void Start()
 	{
 		rb = GetComponent<Rigidbody> ();
-		shotSound = GetComponent<AudioSource> ();
 	}
 
 	void Update()
 	{
-		if (Input.GetButton ("Fire1") && Time.time > nextCommonFire) {
-			nextCommonFire = Time.time + fireRate;
-			foreach (var shotSpawn in shotSpawns) {
-				Instantiate (shot, shotSpawn.position, shotSpawn.rotation);
-			}
-			shotSound.Play ();
+		if (Input.GetButton ("Fire1")) {
+			mainWeapon.fire ();
 		}
 
-		if (Input.GetButton ("Fire2") && Time.time > nextSpecialFire) {
-			nextSpecialFire = Time.time + fireRateSpecial;
-			// arc 12 shots around the ships center
-			for (int i = 0; i < 12; i++) {
-				Instantiate (specialShot, specialShotSpawn.position, specialShotSpawn.rotation);
-				specialShotSpawn.Rotate(0.0f, 30.0f, 0.0f);
-			}
-			shotSound.Play ();
+		if (Input.GetButton ("Fire2")) {
+			secondaryWeapon.fire ();
 		}
 	}
 
