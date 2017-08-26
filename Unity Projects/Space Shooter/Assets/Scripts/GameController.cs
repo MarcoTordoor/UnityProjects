@@ -20,13 +20,18 @@ public class GameController : MonoBehaviour {
 	public GUIText waveText;
 	public GUIText restartText;
 	public GUIText gameOverText;
+	public GUIText wulText;
+	public GUIText wfrText;
 
 	private bool gameOver;
 	private bool restart;
 	private int score;
 	private int wave;
+	private int wul;
+	private int wfr;
 	// used to control the speed of the astroids and enemy ships 
 	private float enemySpeed;
+	private int buffTotal;
 
 	// Use this for initialization
 	void Start () 
@@ -37,11 +42,16 @@ public class GameController : MonoBehaviour {
 		gameOverText.text = "";
 		score = 0;
 		wave = 1;
+		wul = 1;
+		wfr = 1;
 		enemySpeed = -5.0f;
+		buffTotal = 0;
 		UpdateScore ();
 		UpdateWave ();
+		UpdateWULText ();
+		UpdateWFRText ();
 		StartCoroutine(SpawnWaves ());
-		//StartCoroutine(BuffWaves ());
+		StartCoroutine(BuffWaves ());
 	}
 		
 	void Update()
@@ -88,14 +98,17 @@ public class GameController : MonoBehaviour {
 	IEnumerator BuffWaves()
 	{
 		yield return new WaitForSeconds (startWait);
-		while (true) {
+		//Debug.Log ("init");
+		while (true){
 			for (int i = 0; i < buffCount; i++) {
 				GameObject buff = buffs [Random.Range (0, buffs.Length)];
+				//GameObject buff = buffs [2];
 				Vector3 spawnPosition = new Vector3 (Random.Range (-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
 				Quaternion spawnRotation = Quaternion.identity;
 				Instantiate (buff, spawnPosition, spawnRotation);
-				yield return new WaitForSeconds (buffWait);
+				yield return new WaitForSeconds (3);
 			}
+			yield return new WaitForSeconds (buffWait);
 			if (gameOver) {
 				break;
 			}
@@ -110,10 +123,30 @@ public class GameController : MonoBehaviour {
 		waveText.text = "Wave: " + wave;
 	}
 
+	void UpdateWULText () {
+		wulText.text = "Weapon upgrades: " + wul;
+	}
+
+	void UpdateWFRText () {
+		wfrText.text = "Fire rate: " + wfr;
+	}
+
 	public void AddScore(int newScoreValue)
 	{
 		score += newScoreValue;
 		UpdateScore ();
+	}
+
+	public void UpdateWUL(int value)
+	{
+		wul += value;
+		UpdateWULText ();
+	}
+
+	public void UpdateWFR(int value)
+	{
+		wfr += value;
+		UpdateWFRText ();
 	}
 
 	public void GameOver()
@@ -121,4 +154,6 @@ public class GameController : MonoBehaviour {
 		gameOverText.text = "GAME OVER";
 		gameOver = true;
 	}
+
+
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
 	public GameObject bolt;
-	public Transform[] shotSpawns;
+	public List<Transform> shotSpawns;
 
 	public float fireRate;
 

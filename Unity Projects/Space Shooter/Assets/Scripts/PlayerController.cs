@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
 	public MainWeapon mainWeapon;
 	public SecondaryWeapon secondaryWeapon;
 
+	public Shield shield; 
+
 	private Rigidbody rb;
 
 	void Start()
@@ -51,4 +53,20 @@ public class PlayerController : MonoBehaviour
 		rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.velocity.x * -tilt);
 	}
 
+	public void UpgradeMainWeapon(int amount)
+	{
+		mainWeapon.upgrade (amount);
+	}
+
+	public void IncreaseFireRate()
+	{
+		mainWeapon.IncreaseFireRate ();
+	}
+
+	// Give a temporary shield to the player
+	public void ActivateShield()
+	{
+		// add an instance of our shield object to the player
+		Instantiate (shield, gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);		
+	}
 }

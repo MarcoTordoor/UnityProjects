@@ -23,7 +23,8 @@ public class DestroyByContact : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.CompareTag ("Boundary") || other.CompareTag ("Enemy")) {
+		//Debug.Log("contact destroying: this: " + gameObject.name + " other: " + other.name);
+		if (other.CompareTag ("Boundary") || other.CompareTag ("Enemy") || other.CompareTag ("Common Weapon Upgrade") || gameObject.CompareTag ("Shield buff") || gameObject.CompareTag ("Firerate buff")) {
 			return;
 		}
 
@@ -35,17 +36,9 @@ public class DestroyByContact : MonoBehaviour {
 			Instantiate (playerExplosion, other.transform.position, other.transform.rotation);
 			gameController.GameOver ();
 		}
-
-		// check if the player picks up a buff
-		if (this.CompareTag ("Common Weapon Upgrade") && other.CompareTag ("Player")) {
-			/*weapon = other.gameObject.GetComponent<Weapons>;
-			weapon.UpgradeCommonWeapon ();
-			Destroy (gameObject);*/
-		} else {
-			gameController.AddScore (scoreValue);
-			Destroy (other.gameObject);
-			Destroy (gameObject);
-		}
-
+			
+		gameController.AddScore (scoreValue);
+		Destroy (other.gameObject);
+		Destroy (gameObject);
 	}
 }
